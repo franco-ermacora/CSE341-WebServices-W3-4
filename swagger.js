@@ -1,12 +1,9 @@
 const swaggerAutogen = require('swagger-autogen')();
 
 const doc = {
-  info: {
-    title: 'Video Games API',
-    description: 'API para gestión de videojuegos',
-  },
-  host: 'localhost:8080', 
-  schemes: ['http'],
+  info: { title: 'Video Games API', description: 'API' },
+  host: 'cse341-webservices-jp5b.onrender.com', 
+  schemes: ['https'], 
 };
 
 const outputFile = './swagger.json';
