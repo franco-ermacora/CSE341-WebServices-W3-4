@@ -38,9 +38,18 @@ const createGame = async (req, res) => {
 
 const updateGame = async (req, res) => {
   try {
-    const gameId = new ObjectId(req.params.id);
-    const game = { 
-      name: req.body.name, 
+    const gameId = req.params.id;
+    
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ message: "La petición no puede estar vacía." });
+    }
+
+    if (!req.body.name || !req.body.genre) {
+      return res.status(400).json({ message: "Datos incompletos. Se requiere 'name' y 'genre'." });
+    }
+
+    const game = {
+      name: req.body.name,
       genre: req.body.genre,
       developer: req.body.developer,
       releaseYear: req.body.releaseYear,
@@ -48,14 +57,16 @@ const updateGame = async (req, res) => {
       rating: req.body.rating,
       multiplayer: req.body.multiplayer
     };
-    const response = await mongodb.getDb().db('cse341videogamesDB').collection('games').replaceOne({ _id: gameId }, game);
+
+    const response = await mongodb.getDb().db().collection('games').replaceOne({ _id: new ObjectId(gameId) }, game);
+    
     if (response.modifiedCount > 0) {
       res.status(204).send();
     } else {
-      res.status(404).json('No se encontró el juego.');
+      res.status(404).json({ message: "No se encontró el juego con ese ID." });
     }
   } catch (err) {
-    res.status(500).json({ message: err.message || 'Error al actualizar.' });
+    res.status(500).json({ message: err.message || "Error al actualizar." });
   }
 };
 

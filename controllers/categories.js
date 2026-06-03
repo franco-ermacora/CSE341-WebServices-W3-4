@@ -44,9 +44,18 @@ const createCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
   try {
-    const categoryId = new ObjectId(req.params.id);
-    const category = { 
-      name: req.body.name, 
+    const categoryId = req.params.id;
+
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ message: "El cuerpo de la petición no puede estar vacío." });
+    }
+
+    if (!req.body.name || !req.body.type) {
+      return res.status(400).json({ message: "Datos incompletos: 'name' y 'type' son obligatorios." });
+    }
+
+    const category = {
+      name: req.body.name,
       description: req.body.description,
       type: req.body.type,
       popularity: req.body.popularity,
@@ -54,14 +63,19 @@ const updateCategory = async (req, res) => {
       createdYear: req.body.createdYear,
       language: req.body.language
     };
-    const response = await mongodb.getDb().db('cse341videogamesDB').collection('categories').replaceOne({ _id: categoryId }, category);
+
+    const response = await mongodb.getDb().db().collection('categories').replaceOne(
+      { _id: new ObjectId(categoryId) }, 
+      category
+    );
+
     if (response.modifiedCount > 0) {
       res.status(204).send();
     } else {
-      res.status(404).json('No se encontró la categoría o no hubo cambios.');
+      res.status(404).json({ message: "No se encontró la categoría con ese ID." });
     }
   } catch (err) {
-    res.status(500).json({ message: err.message || 'Error al actualizar la categoría.' });
+    res.status(500).json({ message: err.message || "Error al actualizar." });
   }
 };
 
