@@ -5,6 +5,14 @@
     "title": "REST API de Videojuegos",
     "description": "API profesional con autenticación OAuth, validación de datos y manejo de errores."
   },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://cse341-webservices-jp5b.onrender.com/login",
+      "scopes": {}
+    }
+  },
   "host": "cse341-webservices-jp5b.onrender.com",
   "basePath": "/",
   "schemes": [
