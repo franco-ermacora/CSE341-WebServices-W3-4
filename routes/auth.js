@@ -2,21 +2,19 @@ const router = require('express').Router();
 const passport = require('passport');
 
 // RUTA LOGIN
-router.get('/login', passport.authenticate('github'), (req, res) => {});
+router.get('/login', passport.authenticate('github'));
 
-// RUTA CALLBACK (Esto lo necesita GitHub)
+// RUTA CALLBACK
 router.get('/github/callback', passport.authenticate('github', {
     failureRedirect: '/api-docs',
-    sessionSuccessRedirect: '/api-docs' // Redirige a donde está tu Swagger
-}), (req, res) => {
-    res.status(200).send('Logged in');
-});
+    successRedirect: '/api-docs'
+}));
 
 // RUTA LOGOUT
 router.get('/logout', function(req, res, next) {
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.redirect('/'); // Vuelve al inicio
+        res.redirect('/api-docs'); // Redirige a docs tras salir
     });
 });
 
