@@ -22,10 +22,15 @@ app.use((req, res, next) => {
 
 // Sesión configurada para persistencia
 app.use(session({
-  secret: 'secret',
+  secret: 'tu_secreto_muy_seguro', 
   resave: false,
-  saveUninitialized: false, // Mejor seguridad
-  cookie: { httpOnly: true }
+  saveUninitialized: false,
+  proxy: true, 
+  cookie: {
+    secure: true, 
+    sameSite: 'none', 
+    maxAge: 1000 * 60 * 60 * 24 // 24 horas
+  }
 }));
 
 app.use(passport.initialize());
