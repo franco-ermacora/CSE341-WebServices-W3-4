@@ -15,22 +15,36 @@ const getAll = async (req, res) => {
 
 const createGame = async (req, res) => {
   try {
-    // Nota: Aquí podrías ser más flexible con la validación si lo necesitas
-    const game = { 
-      name: req.body.name, 
-      genre: req.body.genre,
-      developer: req.body.developer,
-      releaseYear: req.body.releaseYear,
-      platform: req.body.platform,
-      rating: req.body.rating,
-      multiplayer: req.body.multiplayer
+    const validationRule = { 
+        "name": "required|string", 
+        "genre": "required|string",
+        "developer": "required|string",
+        "releaseYear": "required|integer"
     };
-    const response = await mongodb.getDb().db('cse341videogamesDB').collection('games').insertOne(game);
-    if (response.acknowledged) {
-      res.status(201).json(response);
-    } else {
-      res.status(500).json(response.error || 'Error al crear el juego.');
-    }
+
+    validator(req.body, validationRule, {}, async (err, status) => {
+      if (!status) {
+        return res.status(400).json({ success: false, message: 'Validación fallida', errors: err });
+      }
+
+      const game = { 
+        name: req.body.name, 
+        genre: req.body.genre,
+        developer: req.body.developer,
+        releaseYear: req.body.releaseYear,
+        platform: req.body.platform,
+        rating: req.body.rating,
+        multiplayer: req.body.multiplayer
+      };
+
+      const response = await mongodb.getDb().db('cse341videogamesDB').collection('games').insertOne(game);
+      
+      if (response.acknowledged) {
+        res.status(201).json({ id: response.insertedId });
+      } else {
+        res.status(500).json('Error al crear el juego.');
+      }
+    });
   } catch (err) {
     res.status(500).json({ message: err.message || 'Error interno del servidor.' });
   }

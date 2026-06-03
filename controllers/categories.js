@@ -15,12 +15,18 @@ const getAll = async (req, res) => {
 
 const createCategory = async (req, res) => {
   try {
-    const validationRule = { "name": "required|string", "description": "required|string" };
+    const validationRule = { 
+        "name": "required|string", 
+        "description": "required|string",
+        "type": "required|string",
+        "active": "required|boolean"
+    };
+
     validator(req.body, validationRule, {}, async (err, status) => {
       if (!status) {
-        return res.status(400).send(err);
+        return res.status(400).json({ success: false, message: 'Validación fallida', errors: err });
       }
-      // He añadido campos extra para llegar a 7
+
       const category = { 
         name: req.body.name, 
         description: req.body.description,
@@ -30,15 +36,17 @@ const createCategory = async (req, res) => {
         createdYear: req.body.createdYear,
         language: req.body.language
       };
+
       const response = await mongodb.getDb().db('cse341videogamesDB').collection('categories').insertOne(category);
+      
       if (response.acknowledged) {
-        res.status(201).json(response);
+        res.status(201).json({ id: response.insertedId }); // Devolvemos el ID creado
       } else {
-        res.status(500).json(response.error || 'Error al crear la categoría.');
+        res.status(500).json('Error al crear la categoría.');
       }
     });
   } catch (err) {
-    res.status(500).json({ message: err.message || 'Error interno del servidor al crear.' });
+    res.status(500).json({ message: err.message || 'Error interno del servidor.' });
   }
 };
 
