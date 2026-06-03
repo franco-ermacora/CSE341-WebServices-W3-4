@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "REST API de Videojuegos",
+    "description": "API profesional con autenticación OAuth, validación de datos y manejo de errores."
   },
   "host": "cse341-webservices-jp5b.onrender.com",
   "basePath": "/",
@@ -13,200 +13,72 @@
   "paths": {
     "/categories/": {
       "get": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "description": "Obtener todas las categorías",
+        "produces": ["application/json"],
+        "responses": { "200": { "description": "OK" } }
       },
       "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                }
-              }
+        "description": "Crear nueva categoría",
+        "parameters": [{
+          "name": "body", "in": "body", "schema": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" }, "description": { "type": "string" }, "type": { "type": "string" },
+              "popularity": { "type": "string" }, "active": { "type": "boolean" }, "createdYear": { "type": "integer" }, "language": { "type": "string" }
             }
           }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        }],
+        "responses": { "201": { "description": "Created" }, "400": { "description": "Bad Request" }, "500": { "description": "Internal Server Error" } }
       }
     },
     "/categories/{id}": {
       "put": {
-        "description": "",
+        "description": "Actualizar categoría",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                }
-              }
-            }
-          }
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          { "name": "body", "in": "body", "schema": { "type": "object", "properties": { "name": { "type": "string" }, "description": { "type": "string" }, "type": { "type": "string" }, "popularity": { "type": "string" }, "active": { "type": "boolean" }, "createdYear": { "type": "integer" }, "language": { "type": "string" } } } }
         ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": { "204": { "description": "No Content" }, "500": { "description": "Internal Server Error" } }
       },
       "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "description": "Borrar categoría",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
+        "responses": { "200": { "description": "OK" }, "500": { "description": "Internal Server Error" } }
       }
     },
     "/games/": {
       "get": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "description": "Obtener todos los juegos",
+        "produces": ["application/json"],
+        "responses": { "200": { "description": "OK" } }
       },
       "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "genre": {
-                  "example": "any"
-                }
-              }
+        "description": "Crear nuevo juego",
+        "parameters": [{
+          "name": "body", "in": "body", "schema": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" }, "genre": { "type": "string" }, "developer": { "type": "string" },
+              "releaseYear": { "type": "integer" }, "platform": { "type": "string" }, "rating": { "type": "number" }, "multiplayer": { "type": "boolean" }
             }
           }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        }],
+        "responses": { "201": { "description": "Created" }, "400": { "description": "Bad Request" }, "500": { "description": "Internal Server Error" } }
       }
     },
     "/games/{id}": {
       "put": {
-        "description": "",
+        "description": "Actualizar juego",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "genre": {
-                  "example": "any"
-                }
-              }
-            }
-          }
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          { "name": "body", "in": "body", "schema": { "type": "object", "properties": { "name": { "type": "string" }, "genre": { "type": "string" }, "developer": { "type": "string" }, "releaseYear": { "type": "integer" }, "platform": { "type": "string" }, "rating": { "type": "number" }, "multiplayer": { "type": "boolean" } } } }
         ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": { "204": { "description": "No Content" }, "500": { "description": "Internal Server Error" } }
       },
       "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "description": "Borrar juego",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
+        "responses": { "200": { "description": "OK" }, "500": { "description": "Internal Server Error" } }
       }
     }
   }
