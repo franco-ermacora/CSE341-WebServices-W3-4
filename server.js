@@ -11,18 +11,21 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
+// CORS corregido para permitir credenciales
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key');
+  res.setHeader('Access-Control-Allow-Origin', '*'); 
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
 
+// Sesión configurada para persistencia
 app.use(session({
   secret: 'secret',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // Mejor seguridad
+  cookie: { httpOnly: true }
 }));
 
 app.use(passport.initialize());

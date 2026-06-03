@@ -1,10 +1,8 @@
 const isAuthenticated = (req, res, next) => {
-  if (req.session.user === undefined) {
-    return res.status(401).json("No estás autorizado.");
+  if (req.isAuthenticated()) {
+    return next();
   }
-  next();
+  res.status(401).json({ message: "No autorizado. Por favor, inicia sesión." });
 };
 
-module.exports = {
-  isAuthenticated,
-};
+module.exports = { isAuthenticated };
