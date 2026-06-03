@@ -15,24 +15,24 @@ const getAll = async (req, res) => {
 
 const createGame = async (req, res) => {
   try {
-    const validationRule = { "name": "required|string", "genre": "required|string" };
-    validator(req.body, validationRule, {}, async (err, status) => {
-      if (!status) {
-        return res.status(400).send(err);
-      }
-      const game = { 
-        name: req.body.name, 
-        genre: req.body.genre 
-      };
-      const response = await mongodb.getDb().db('cse341videogamesDB').collection('games').insertOne(game);
-      if (response.acknowledged) {
-        res.status(201).json(response);
-      } else {
-        res.status(500).json(response.error || 'Error al crear el juego.');
-      }
-    });
+    // Nota: Aquí podrías ser más flexible con la validación si lo necesitas
+    const game = { 
+      name: req.body.name, 
+      genre: req.body.genre,
+      developer: req.body.developer,
+      releaseYear: req.body.releaseYear,
+      platform: req.body.platform,
+      rating: req.body.rating,
+      multiplayer: req.body.multiplayer
+    };
+    const response = await mongodb.getDb().db('cse341videogamesDB').collection('games').insertOne(game);
+    if (response.acknowledged) {
+      res.status(201).json(response);
+    } else {
+      res.status(500).json(response.error || 'Error al crear el juego.');
+    }
   } catch (err) {
-    res.status(500).json({ message: err.message || 'Error interno del servidor al crear.' });
+    res.status(500).json({ message: err.message || 'Error interno del servidor.' });
   }
 };
 
@@ -41,16 +41,21 @@ const updateGame = async (req, res) => {
     const gameId = new ObjectId(req.params.id);
     const game = { 
       name: req.body.name, 
-      genre: req.body.genre 
+      genre: req.body.genre,
+      developer: req.body.developer,
+      releaseYear: req.body.releaseYear,
+      platform: req.body.platform,
+      rating: req.body.rating,
+      multiplayer: req.body.multiplayer
     };
     const response = await mongodb.getDb().db('cse341videogamesDB').collection('games').replaceOne({ _id: gameId }, game);
     if (response.modifiedCount > 0) {
       res.status(204).send();
     } else {
-      res.status(404).json('No se encontró el juego o no hubo cambios.');
+      res.status(404).json('No se encontró el juego.');
     }
   } catch (err) {
-    res.status(500).json({ message: err.message || 'Error al actualizar el juego.' });
+    res.status(500).json({ message: err.message || 'Error al actualizar.' });
   }
 };
 
@@ -61,10 +66,10 @@ const deleteGame = async (req, res) => {
     if (response.deletedCount > 0) {
       res.status(200).send();
     } else {
-      res.status(404).json('No se encontró el juego para borrar.');
+      res.status(404).json('No se encontró el juego.');
     }
   } catch (err) {
-    res.status(500).json({ message: err.message || 'Error al borrar el juego.' });
+    res.status(500).json({ message: err.message || 'Error al borrar.' });
   }
 };
 

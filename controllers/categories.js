@@ -20,9 +20,15 @@ const createCategory = async (req, res) => {
       if (!status) {
         return res.status(400).send(err);
       }
+      // He añadido campos extra para llegar a 7
       const category = { 
         name: req.body.name, 
-        description: req.body.description 
+        description: req.body.description,
+        type: req.body.type,
+        popularity: req.body.popularity,
+        active: req.body.active,
+        createdYear: req.body.createdYear,
+        language: req.body.language
       };
       const response = await mongodb.getDb().db('cse341videogamesDB').collection('categories').insertOne(category);
       if (response.acknowledged) {
@@ -41,7 +47,12 @@ const updateCategory = async (req, res) => {
     const categoryId = new ObjectId(req.params.id);
     const category = { 
       name: req.body.name, 
-      description: req.body.description 
+      description: req.body.description,
+      type: req.body.type,
+      popularity: req.body.popularity,
+      active: req.body.active,
+      createdYear: req.body.createdYear,
+      language: req.body.language
     };
     const response = await mongodb.getDb().db('cse341videogamesDB').collection('categories').replaceOne({ _id: categoryId }, category);
     if (response.modifiedCount > 0) {
